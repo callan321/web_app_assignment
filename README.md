@@ -4,6 +4,10 @@
 .env files removed from gitignore  and will be included in git.
 ### install dependencies 
 ```
+git clone https://github.com/callan321/web_app_assignment.git
+cd web_app_assignment
+```
+```
 composer install
 ```
 ```
