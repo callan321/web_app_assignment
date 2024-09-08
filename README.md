@@ -49,16 +49,15 @@ The `app:database` command deletes the current SQLite database, creates a new on
 - [x] Input validation 1: A name (user, item, and manufacturer) must have more than 2 characters and cannot have the following symbols: `-`, `_`, `+`, `"`. Appropriate error message should be displayed on validation error.
 - [x] Input validation 2: Any odd number in a username (e.g. 1Smith, Bob21, or Ace1337Nova) will be removed from the name before the name is stored. Example: 1Smith becomes Smith, Bob21 becomes Bob, Ace1337Nova becomes AceNova.
 - [x] A message should be displayed to inform the user that the name they entered has been changed and display the altered name.
-- [ ] Users can edit existing reviews.
-- [ ] An item can be deleted. When a user deletes an item, the reviews for that item should also be deleted.
-- [ ] When listing all items on the home page, the number of reviews and the average rating for that item should also be displayed.
-- [ ] The home page has a feature where users can select to sort the list of items in the following ways:
-- [ ] By the number of reviews
-- [ ] By the average rating
-- [ ] Users can select to sort by either ascending or descending order.
+- [x] Users can edit existing reviews.
+- [x] An item can be deleted. When a user deletes an item, the reviews for that item should also be deleted.
+- [x] When listing all items on the home page, the number of reviews and the average rating for that item should also be displayed.
+- [x] The home page has a feature where users can select to sort the list of items in the following ways:
+- [x] By the number of reviews
+- [x] By the average rating
+- [x] Users can select to sort by either ascending or descending order.
 - [ ] There is a page that lists all manufacturers and displays the average rating for that manufacturer. The average rating for a manufacturer is the average of the average ratings of all items from that manufacturer.
 - [ ] Clicking on a manufacturer will list all items and the average rating of each item from that manufacturer.
-- [ ] Clicking on the item will bring up the review page for that item.
 - [ ] After the user submits a review, the system remembers that user’s name for the duration of the session. Subsequent reviews made will not require the user to enter their name but will instead use the same username as the first post/comment.
 - [ ] There is a feature that identifies or helps users identify fake reviews. You have to research methods for identifying or supporting the identification of fake reviews and implement the method(s). You will be judged on the usefulness, usability, creativity/innovation, and technical competence of your design and implementation.
 

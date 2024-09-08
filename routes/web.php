@@ -4,11 +4,59 @@ use App\Services\DatabaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function (DatabaseService $db) {
-    // Fetch items from the database
-    $items = $db->select('SELECT * FROM items');
+Route::get('/', function () {
+    return redirect('home');
+});
 
+Route::get('/home/{type?}', function (DatabaseService $db, $type = '') {
+    $query = '';
 
+    // Determine which query to use based on the {type} parameter
+    if ($type === 'revasc') {
+        $query = "
+            SELECT i.*,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
+            FROM items i
+            ORDER BY review_count ASC
+        ";
+    } elseif ($type === 'revdesc') {
+        $query = "
+            SELECT i.*,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
+            FROM items i
+            ORDER BY review_count DESC
+        ";
+    } elseif ($type === 'rateasc') {
+        $query = "
+            SELECT i.*,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
+            FROM items i
+            ORDER BY average_rating ASC
+        ";
+    } elseif ($type === 'ratedesc') {
+        $query = "
+            SELECT i.*,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
+            FROM items i
+            ORDER BY average_rating DESC
+        ";
+    } else {
+        // Default sorting by created_at
+        $query = "
+            SELECT i.*,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
+            FROM items i
+            ORDER BY i.created_at ASC
+        ";
+    }
+
+    // Execute the query and return with  sorted items
+    $items = $db->select($query);
     return view('home', ['items' => $items]);
 });
 
@@ -66,12 +114,16 @@ Route::get('/review/{id}', function (DatabaseService $db, $id) {
     return view('review', ['itemId' => $id]);
 });
 
-Route::post('/add-review', function (Request $request, DatabaseService $db) {
+Route::post('/submit-review', function (Request $request, DatabaseService $db) {
     // Form Data
     $userName = $request->input('user_name');
     $rating = $request->input('rating');
     $reviewText = $request->input('review_text');
     $itemId = $request->input('item_id');
+
+    // additional params for editing
+    $isEdit = $request->input('edit', false);
+    $reviewId = $request->input('review_id');
 
     // for sanitization
     $originalUserName = $userName;
@@ -95,7 +147,14 @@ Route::post('/add-review', function (Request $request, DatabaseService $db) {
         return redirect("/item/$itemId?name_changed=$userName");
     }
 
-    $db->insert('INSERT INTO reviews (user_name, rating, review_text, item_id) VALUES (?, ?, ?, ?)',
-        [$userName, $rating, $reviewText, $itemId]);
+    // either insert or update
+    if ($isEdit) {
+        $db->update('UPDATE reviews SET user_name = ?, rating = ?, review_text = ?, item_id = ? WHERE id = ?',
+            [$userName, $rating, $reviewText, $itemId, $reviewId]);
+    } else {
+        $db->insert('INSERT INTO reviews (user_name, rating, review_text, item_id) VALUES (?, ?, ?, ?)',
+            [$userName, $rating, $reviewText, $itemId]);
+
+    }
     return redirect("/item/$itemId");
 });

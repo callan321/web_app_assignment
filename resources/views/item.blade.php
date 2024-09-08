@@ -34,15 +34,35 @@
 
     <div class="mt-12">
         <h2 class="text-2xl font-semibold">Reviews</h2>
-        <a href="{{ url('review/' . $item->id) }}">Add a Review</a>
+        <div class="pt-2">
+        <a
+            href="{{ url('review/' . $item->id) }}"
+            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+        >Add a Review</a>
 
+        </div>
         <ul>
             @forelse($reviews as $review)
+
                 <li class="mt-4 border p-4 rounded-md">
-                    <p class="font-bold">{{ $review->user_name }} (Rating: {{ $review->rating }} / 5)</p>
-                    <p>{{ $review->review_text }}</p>
-                    <p class="text-sm text-gray-500">{{ $review->created_at }}</p>
+                    <div class="grid grid-cols-[1fr,auto]">
+                        <div >
+                        <p class="font-bold">{{ $review->user_name }} (Rating: {{ $review->rating }} / 5)</p>
+                        <p>{{ $review->review_text }}</p>
+                        <p class="text-sm text-gray-500">{{ $review->created_at }}</p>
+                        </div>
+                        <div class="flex items-center md:px-4">
+                            <a
+                                href="{{ url('/review/' . $item->id . '?edit=true&review_id=' . $review->id . '&user_name=' . urlencode($review->user_name) . '&rating=' . $review->rating . '&review_text=' . urlencode($review->review_text)) }}"
+                                type="button"
+                                class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                            >
+                                Edit
+                            </a>
+                        </div>
+                    </div>
                 </li>
+
             @empty
                 <p>No reviews yet.</p>
             @endforelse
