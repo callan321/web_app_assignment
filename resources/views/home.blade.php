@@ -12,7 +12,7 @@
                 <th class="border border-gray-300 p-2">Name</th>
                 <th class="border border-gray-300 p-2">Manufacturer</th>
                 <th class="border border-gray-300 p-2">Created At</th>
-                <th class="border border-gray-300 p-2">Review</th>
+                <th class="border border-gray-300 p-2">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -21,7 +21,20 @@
                     <td class="border border-gray-300 p-2">{{ $item->name }}</td>
                     <td class="border border-gray-300 p-2">{{ $item->manufacturer }}</td>
                     <td class="border border-gray-300 p-2">{{ $item->created_at }}</td>
-                    <td class="border border-gray-300 p-2">review</td>
+                    <td class="border border-gray-300 p-2 space-x-2">
+                        <a
+                            href="{{ url('/item/' . $item->id) }}"
+                            type="button" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm "
+                        >
+                            View
+                        </a>
+                        <a
+                            href="{{ url('/item/del/' . $item->id) }}"
+                            type="button" class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm "
+                        >
+                            Delete
+                        </a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

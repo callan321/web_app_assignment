@@ -12,11 +12,12 @@
         <div class="flex gap-x-12">
             <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
             <a href="/review" class="text-sm font-semibold leading-6 text-gray-900">Review</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">NewItem</a>
+            <a href="/add-item" class="text-sm font-semibold leading-6 text-gray-900">NewItem</a>
         </div>
     </nav>
 </header>
-
-<div class="w-full h-screen pt-12 ">
-    @yield('content')
-</div>
+<body>
+    <div class="w-full h-screen pt-12 ">
+        @yield('content')
+    </div>
+</body>

@@ -35,4 +35,24 @@ class DatabaseService
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public function insert($query, $params = [])
+    {
+        $stmt = $this->pdo->prepare($query);
+        return $stmt->execute($params);
+    }
+
+    public function update($query, $params = [])
+    {
+        $stmt = $this->pdo->prepare($query);
+        return $stmt->execute($params);
+    }
+
+
+    public function delete($query, $params = [])
+    {
+        $stmt = $this->pdo->prepare($query);
+        return $stmt->execute($params);
+
+    }
 }

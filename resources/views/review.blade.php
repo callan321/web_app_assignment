@@ -1,32 +1,38 @@
 @extends('layout')
 
 @section('content')
+    <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Add a Review</h1>
 
-    <div class="mx-auto px-4 space-x-8 grid max-w-6xl grid-cols-1 md:grid-cols-2">
-        <div class="max-w-lg ">
-            <section aria-labelledby="information-heading" class="mt-4">
-                <div class="mt-16">
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 ">Items Name</h1>
-                </div>
-                <div class="mt-4">
-                    <h3 class="font-semibold tracking-tight text-gray-900 text-xl">Manufactor</h3>
-                </div>
-                <div class="mt-2">
-                    <p>5 / 10</p>
-                </div>
-                <div class="mt-4">
-                    <p class="text-base text-gray-500">Store all the product information here.</p>
-                </div>
-                <div class="mt-10">
-                    <button type="submit" class="flex items-center justify-center rounded-md bg-indigo-600 px-12  py-3 font-medium text-white hover:bg-indigo-700">Review</button>
-                </div>
-            </section>
-        </div>
-        <div class=" w-[30rem] h-[30rem]">
-            <img src="https://via.placeholder.com/150" alt="Placeholder Image" class="h-full w-full object-cover object-center">
-        </div>
+        <form action="{{ url('/add-review') }}" method="POST">
+            @csrf
+            <input type="hidden" name="item_id" value="{{ $itemId }}">
 
+            <div class="mb-4">
+                <label for="user_name" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="user_name" id="user_name" class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="rating" class="block text-sm font-medium text-gray-700">Rating (1 to 5)</label>
+                <select name="rating" id="rating" class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="review_text" class="block text-sm font-medium text-gray-700">Review</label>
+                <textarea name="review_text" id="review_text" rows="4" class="mt-1 p-2 w-full border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Submit Review
+                </button>
+            </div>
+        </form>
     </div>
 @endsection
-
-

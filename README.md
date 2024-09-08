@@ -41,14 +41,14 @@ The `app:database` command deletes the current SQLite database, creates a new on
 ## Requirements 
 
 - [x] All pages must have a navigation menu, either across the top of the page or down the left or right column.
-- [ ] The home page must display a list of all items in the database. Clicking on the item will bring up the review page for that item.
-- [ ] The review page will display all the details for that item (i.e. name, manufacturer, and any other detail for that item). Furthermore, it will display all reviews for that item. Each review contains the reviewer’s name, the rating, date of the review, and the review (text).
-- [ ] Users can create a new item. New item must have a name and a manufacturer.
-- [ ] Users can create a new review for an item. To add a review, user enters the username, rating, and the review text (which can be up to a few paragraphs of text). User (with the same name) cannot post multiple reviews for the same item. An item can have multiple reviews.
-- [ ] When adding a review, the user should not have to enter the date; the date should be taken from the system.
-- [ ] Input validation 1: A name (user, item, and manufacturer) must have more than 2 characters and cannot have the following symbols: `-`, `_`, `+`, `"`. Appropriate error message should be displayed on validation error.
-- [ ] Input validation 2: Any odd number in a username (e.g. 1Smith, Bob21, or Ace1337Nova) will be removed from the name before the name is stored. Example: 1Smith becomes Smith, Bob21 becomes Bob, Ace1337Nova becomes AceNova.
-- [ ] A message should be displayed to inform the user that the name they entered has been changed and display the altered name.
+- [x] The home page must display a list of all items in the database. Clicking on the item will bring up the review page for that item.
+- [x] The review page will display all the details for that item (i.e. name, manufacturer, and any other detail for that item). Furthermore, it will display all reviews for that item. Each review contains the reviewer’s name, the rating, date of the review, and the review (text).
+- [x] Users can create a new item. New item must have a name and a manufacturer.
+- [x] Users can create a new review for an item. To add a review, user enters the username, rating, and the review text (which can be up to a few paragraphs of text). User (with the same name) cannot post multiple reviews for the same item. An item can have multiple reviews.
+- [X] When adding a review, the user should not have to enter the date; the date should be taken from the system.
+- [x] Input validation 1: A name (user, item, and manufacturer) must have more than 2 characters and cannot have the following symbols: `-`, `_`, `+`, `"`. Appropriate error message should be displayed on validation error.
+- [x] Input validation 2: Any odd number in a username (e.g. 1Smith, Bob21, or Ace1337Nova) will be removed from the name before the name is stored. Example: 1Smith becomes Smith, Bob21 becomes Bob, Ace1337Nova becomes AceNova.
+- [x] A message should be displayed to inform the user that the name they entered has been changed and display the altered name.
 - [ ] Users can edit existing reviews.
 - [ ] An item can be deleted. When a user deletes an item, the reviews for that item should also be deleted.
 - [ ] When listing all items on the home page, the number of reviews and the average rating for that item should also be displayed.
@@ -60,5 +60,7 @@ The `app:database` command deletes the current SQLite database, creates a new on
 - [ ] Clicking on a manufacturer will list all items and the average rating of each item from that manufacturer.
 - [ ] Clicking on the item will bring up the review page for that item.
 - [ ] After the user submits a review, the system remembers that user’s name for the duration of the session. Subsequent reviews made will not require the user to enter their name but will instead use the same username as the first post/comment.
-- [ ] This feature requires the session feature of PHP/Laravel.
 - [ ] There is a feature that identifies or helps users identify fake reviews. You have to research methods for identifying or supporting the identification of fake reviews and implement the method(s). You will be judged on the usefulness, usability, creativity/innovation, and technical competence of your design and implementation.
+
+## Check
+- [ ] Form sanitation 
