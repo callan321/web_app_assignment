@@ -7,16 +7,16 @@
     @vite('resources/css/app.css')
 </head>
 
-<header class="bg-white shadow">
-    <nav class="flex items-center justify-center p-6 lg:px-8">
+<header class="bg-white shadow z-40">
+    <nav class="flex items-center justify-center p-6 ">
         <div class="flex gap-x-12">
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Review</a>
+            <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+            <a href="/review" class="text-sm font-semibold leading-6 text-gray-900">Review</a>
             <a href="#" class="text-sm font-semibold leading-6 text-gray-900">NewItem</a>
         </div>
     </nav>
 </header>
 
-<div class="container">
+<div class="w-full h-screen pt-12 ">
     @yield('content')
 </div>

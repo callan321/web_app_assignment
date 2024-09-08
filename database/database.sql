@@ -29,4 +29,4 @@ INSERT INTO items (name, manufacturer) VALUES ('Phone X', 'Brand A');
 INSERT INTO items (name, manufacturer) VALUES ('Phone Y', 'Brand B');
 
 INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Alice', 5, 'Great phone!');
-INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (2, 'Bob', 4, 'Good performance.');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Bob', 4, 'Good performance.');
