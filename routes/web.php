@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +24,6 @@ Route::get('/', function () {
         die('Connection failed: ' . $e->getMessage());
     }
 
-    // Pass the data to the view
-    return view('welcome', ['items' => $items, 'reviews' => $reviews]);
+
+    return view('home', ['items' => $items, 'reviews' => $reviews]);
 });
