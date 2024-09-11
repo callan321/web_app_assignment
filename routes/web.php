@@ -2,7 +2,6 @@
 
 use App\Services\DatabaseService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -190,4 +189,42 @@ Route::post('/update-review', function (Request $request, DatabaseService $db) {
         [$userName, $rating, $reviewText, $itemId, $reviewId]);
 
     return redirect("/item/$itemId");
+});
+
+Route::get('/manufacturers', function (DatabaseService $db) {
+    // manufacturers and average item rating
+    $query = "
+        SELECT manufacturer,
+               IFNULL(AVG(
+                   (SELECT AVG(rating)
+                    FROM reviews
+                    WHERE reviews.item_id = items.id)
+               ), 0) AS average_rating
+        FROM items
+        GROUP BY manufacturer
+        ORDER BY average_rating DESC
+    ";
+
+    $manufacturers = $db->select($query);
+    return view('manufacturers', ['manufacturers' => $manufacturers]);
+});
+
+Route::get('/manufacturer/{manufacturer}', function (DatabaseService $db, $manufacturer) {
+    // Decode the manufacturer name to handle spaces properly
+    $manufacturer = urldecode($manufacturer);
+
+    // items of manufacturer and average rating
+    $query = "
+        SELECT items.*,
+               IFNULL(
+                   (SELECT AVG(rating)
+                    FROM reviews
+                    WHERE reviews.item_id = items.id), 0) AS average_rating
+        FROM items
+        WHERE manufacturer = ?
+        ORDER BY average_rating DESC
+    ";
+
+    $items = $db->select($query, [$manufacturer]);
+    return view('manufacturer_items', ['manufacturer' => $manufacturer, 'items' => $items]);
 });

@@ -11,7 +11,7 @@
     <nav class="flex items-center justify-center p-6 ">
         <div class="flex gap-x-12">
             <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
-            <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Manufacturers</a>
+            <a href="/manufacturers" class="text-sm font-semibold leading-6 text-gray-900">Manufacturers</a>
             <a href="/add-item" class="text-sm font-semibold leading-6 text-gray-900">Add Item</a>
         </div>
     </nav>

@@ -64,7 +64,7 @@
                 </li>
 
             @empty
-                <p>No reviews yet.</p>
+                <p class="mt-3">No reviews yet.</p>
             @endforelse
         </ul>
     </div>
