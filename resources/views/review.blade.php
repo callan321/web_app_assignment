@@ -6,18 +6,15 @@
             {{ request()->query('edit') ? 'Edit Review' : 'Add Review' }}
         </h1>
 
-        <form action="{{ url('/submit-review') }}" method="POST">
+        <form
+            action="{{ request()->query('edit') ? url('/update-review') : url('/post-review') }}"
+            method="POST">
 
             @csrf
 
             @if(request()->query('edit'))
-                <input type="hidden" name="edit" value="true">
                 <input type="hidden" name="review_id" value="{{ request()->query('review_id') }}">
-            @else
-                <input type="hidden" name="edit" value="false">
-                <input type="hidden" name="review_id" value="">
             @endif
-
 
             <input type="hidden" name="item_id" value="{{ $itemId }}">
 
@@ -39,6 +36,7 @@
                 <label for="review_text" class="block text-sm font-medium text-gray-700">Review</label>
                 <textarea name="review_text" id="review_text" rows="4" class="mt-1 p-2 w-full border rounded-lg shadow-sm sm:text-sm" required>{{ request()->query('edit') ? request()->query('review_text') : '' }}</textarea>
             </div>
+
             <div class="flex justify-end">
                 <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 ">
                     {{ request()->query('edit') ? 'Update Review' : 'Submit Review' }}

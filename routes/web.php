@@ -2,6 +2,7 @@
 
 use App\Services\DatabaseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -114,20 +115,14 @@ Route::get('/review/{id}', function (DatabaseService $db, $id) {
     return view('review', ['itemId' => $id]);
 });
 
-Route::post('/submit-review', function (Request $request, DatabaseService $db) {
+Route::post('/post-review', function (Request $request, DatabaseService $db) {
     // Form Data
     $userName = $request->input('user_name');
     $rating = $request->input('rating');
     $reviewText = $request->input('review_text');
     $itemId = $request->input('item_id');
 
-    // additional params for editing
-    $isEdit = $request->input('edit', false);
-    $reviewId = $request->input('review_id');
-
-    // for sanitization
-    $originalUserName = $userName;
-    // validate
+    // Sanitize and validate
     $forbiddenChars = ['-', '_', '+', '"'];
     foreach ($forbiddenChars as $char) {
         if (str_contains($userName, $char)) {
@@ -139,22 +134,60 @@ Route::post('/submit-review', function (Request $request, DatabaseService $db) {
         die("Error: Username must be at least 3 characters long.");
     }
 
+    // Remove odd numbers from username
+    $originalUserName = $userName;
     $oddNumbers = ['1', '3', '5', '7', '9'];
     foreach ($oddNumbers as $odd) {
         $userName = str_replace($odd, '', $userName);
     }
+
+    // If the username has changed, redirect
     if ($userName !== $originalUserName) {
         return redirect("/item/$itemId?name_changed=$userName");
     }
 
-    // either insert or update
-    if ($isEdit) {
-        $db->update('UPDATE reviews SET user_name = ?, rating = ?, review_text = ?, item_id = ? WHERE id = ?',
-            [$userName, $rating, $reviewText, $itemId, $reviewId]);
-    } else {
-        $db->insert('INSERT INTO reviews (user_name, rating, review_text, item_id) VALUES (?, ?, ?, ?)',
-            [$userName, $rating, $reviewText, $itemId]);
+    // Insert the new review
+    $db->insert('INSERT INTO reviews (user_name, rating, review_text, item_id) VALUES (?, ?, ?, ?)',
+        [$userName, $rating, $reviewText, $itemId]);
 
+    return redirect("/item/$itemId");
+});
+
+Route::post('/update-review', function (Request $request, DatabaseService $db) {
+    // Form Data
+    $userName = $request->input('user_name');
+    $rating = $request->input('rating');
+    $reviewText = $request->input('review_text');
+    $itemId = $request->input('item_id');
+    $reviewId = $request->input('review_id');  // Only needed for updating
+
+    // Sanitize and validate
+    $forbiddenChars = ['-', '_', '+', '"'];
+    foreach ($forbiddenChars as $char) {
+        if (str_contains($userName, $char)) {
+            die("Error: Invalid name. Name cannot have: - _ + \"");
+        }
     }
+
+    if (strlen($userName) < 3) {
+        die("Error: Username must be at least 3 characters long.");
+    }
+
+    // Remove odd numbers from username
+    $originalUserName = $userName;
+    $oddNumbers = ['1', '3', '5', '7', '9'];
+    foreach ($oddNumbers as $odd) {
+        $userName = str_replace($odd, '', $userName);
+    }
+
+    // If the username has changed, redirect
+    if ($userName !== $originalUserName) {
+        return redirect("/item/$itemId?name_changed=$userName");
+    }
+
+    // Update the review
+    $db->update('UPDATE reviews SET user_name = ?, rating = ?, review_text = ?, item_id = ? WHERE id = ?',
+        [$userName, $rating, $reviewText, $itemId, $reviewId]);
+
     return redirect("/item/$itemId");
 });
