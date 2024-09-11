@@ -25,8 +25,16 @@ CREATE TABLE reviews (
      FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
-INSERT INTO items (name, manufacturer) VALUES ('Phone X', 'Brand A');
-INSERT INTO items (name, manufacturer) VALUES ('Phone Y', 'Brand B');
+-- Items
+INSERT INTO items (name, manufacturer) VALUES ('Galaxy Phone', 'Samsung');
+INSERT INTO items (name, manufacturer) VALUES ('Galaxy Tablet', 'Samsung');
+INSERT INTO items (name, manufacturer) VALUES ('Desktop', 'Microsoft');
+INSERT INTO items (name, manufacturer) VALUES ('MacBook', 'Apple');
 
-INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Alice', 5, 'Great phone!');
-INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Bob', 4, 'Good performance.');
+-- Reviews
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'John', 5, 'Excellent phone.');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (2, 'Jane', 4, 'Good size.');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (3, 'Emily', 4, 'Solid pc, good performance.');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (4, 'Chris', 5, 'Fantastic laptop.');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Brandon', 1, 'Terrible phone, do not buy!');
+INSERT INTO reviews (item_id, user_name, rating, review_text) VALUES (1, 'Kaleb', 3, 'OK.');

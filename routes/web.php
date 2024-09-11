@@ -14,48 +14,47 @@ Route::get('/home/{type?}', function (DatabaseService $db, $type = '') {
     // Determine which query to use based on the {type} parameter
     if ($type === 'revasc') {
         $query = "
-            SELECT i.*,
-                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
-                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
-            FROM items i
+            SELECT *,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+            FROM items
             ORDER BY review_count ASC
         ";
     } elseif ($type === 'revdesc') {
         $query = "
-            SELECT i.*,
-                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
-                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
-            FROM items i
+            SELECT *,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+            FROM items
             ORDER BY review_count DESC
         ";
     } elseif ($type === 'rateasc') {
         $query = "
-            SELECT i.*,
-                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
-                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
-            FROM items i
+            SELECT *,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+            FROM items
             ORDER BY average_rating ASC
         ";
     } elseif ($type === 'ratedesc') {
         $query = "
-            SELECT i.*,
-                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
-                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
-            FROM items i
+            SELECT *,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+            FROM items
             ORDER BY average_rating DESC
         ";
     } else {
         // Default sorting by created_at
         $query = "
-            SELECT i.*,
-                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = i.id) AS review_count,
-                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = i.id) AS average_rating
-            FROM items i
-            ORDER BY i.created_at ASC
+            SELECT *,
+                   (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+                   (SELECT IFNULL(AVG(rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+            FROM items
         ";
     }
 
-    // Execute the query and return with  sorted items
+    // Execute the query and return with sorted items
     $items = $db->select($query);
     return view('home', ['items' => $items]);
 });
@@ -69,17 +68,32 @@ Route::get('/item/del/{id}', function (DatabaseService $db, int $id) {
 });
 
 Route::get('/item/{id}', function ($id, DatabaseService $db) {
-    // Fetch the item by its id
-    $item = $db->select('SELECT * FROM items WHERE id = ?', [$id]);
+    // Fetch the item by its id along with review count and average rating
+    $query = "
+        SELECT *,
+               (SELECT COUNT(*) FROM reviews r WHERE r.item_id = items.id) AS review_count,
+               (SELECT IFNULL(AVG(r.rating), 0) FROM reviews r WHERE r.item_id = items.id) AS average_rating
+        FROM items
+        WHERE items.id = ?
+    ";
+
+    // Execute the query to get the item with review data
+    $item = $db->select($query, [$id]);
+
     // Fetch reviews for the specific item
     $reviews = $db->select('SELECT * FROM reviews WHERE item_id = ?', [$id]);
-    // If no item is  found show a 404
+
+    // If no item is found, show a 404
     if (empty($item)) {
         abort(404, 'Item not found');
     }
+
+    // Return the view with the item, reviews, review count, and average rating
     return view('item', [
         'item' => $item[0],
-        'reviews' => $reviews
+        'reviews' => $reviews,
+        'review_count' => $item[0]->review_count,
+        'average_rating' => $item[0]->average_rating
     ]);
 });
 
@@ -116,7 +130,7 @@ Route::get('/review/{id}', function (DatabaseService $db, $id) {
 
 Route::post('/post-review', function (Request $request, DatabaseService $db) {
     // Form Data
-    $userName = $request->input('user_name');
+    $userName = session('username', $request->input('user_name'));
     $rating = $request->input('rating');
     $reviewText = $request->input('review_text');
     $itemId = $request->input('item_id');
@@ -144,6 +158,7 @@ Route::post('/post-review', function (Request $request, DatabaseService $db) {
     if ($userName !== $originalUserName) {
         return redirect("/item/$itemId?name_changed=$userName");
     }
+    session(['username' => $userName]);
 
     // Insert the new review
     $db->insert('INSERT INTO reviews (user_name, rating, review_text, item_id) VALUES (?, ?, ?, ?)',
@@ -158,7 +173,7 @@ Route::post('/update-review', function (Request $request, DatabaseService $db) {
     $rating = $request->input('rating');
     $reviewText = $request->input('review_text');
     $itemId = $request->input('item_id');
-    $reviewId = $request->input('review_id');  // Only needed for updating
+    $reviewId = $request->input('review_id');
 
     // Sanitize and validate
     $forbiddenChars = ['-', '_', '+', '"'];

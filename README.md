@@ -56,10 +56,8 @@ The `app:database` command deletes the current SQLite database, creates a new on
 - [x] By the number of reviews
 - [x] By the average rating
 - [x] Users can select to sort by either ascending or descending order.
-- [ ] There is a page that lists all manufacturers and displays the average rating for that manufacturer. The average rating for a manufacturer is the average of the average ratings of all items from that manufacturer.
-- [ ] Clicking on a manufacturer will list all items and the average rating of each item from that manufacturer.
+- [x] There is a page that lists all manufacturers and displays the average rating for that manufacturer. The average rating for a manufacturer is the average of the average ratings of all items from that manufacturer.
+- [x] Clicking on a manufacturer will list all items and the average rating of each item from that manufacturer.
 - [ ] After the user submits a review, the system remembers that user’s name for the duration of the session. Subsequent reviews made will not require the user to enter their name but will instead use the same username as the first post/comment.
 - [ ] There is a feature that identifies or helps users identify fake reviews. You have to research methods for identifying or supporting the identification of fake reviews and implement the method(s). You will be judged on the usefulness, usability, creativity/innovation, and technical competence of your design and implementation.
 
-## Check
-- [ ] Form sanitation 

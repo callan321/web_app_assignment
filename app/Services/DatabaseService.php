@@ -36,19 +36,21 @@ class DatabaseService
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    // Insert data into the database
     public function insert($query, $params = [])
     {
         $stmt = $this->pdo->prepare($query);
         return $stmt->execute($params);
     }
 
+    // Update data in the database
     public function update($query, $params = [])
     {
         $stmt = $this->pdo->prepare($query);
         return $stmt->execute($params);
     }
 
-
+    // Delete data from the database
     public function delete($query, $params = [])
     {
         $stmt = $this->pdo->prepare($query);

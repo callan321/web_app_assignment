@@ -20,7 +20,9 @@
 
             <div class="mb-4">
                 <label for="user_name" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" name="user_name" id="user_name" value="{{ request()->query('edit') ? request()->query('user_name') : '' }}" class="mt-1 p-2 w-full border rounded-lg shadow-sm sm:text-sm">
+                <input type="text" name="user_name" id="user_name"
+                       value="{{ session('username', request()->query('edit') ? request()->query('user_name') : '') }}"
+                       class="mt-1 p-2 w-full border rounded-lg shadow-sm sm:text-sm">
             </div>
 
             <div class="mb-4">

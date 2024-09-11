@@ -17,7 +17,8 @@
                     <h3 class="font-semibold tracking-tight text-gray-900 text-xl">{{ $item->manufacturer }}</h3>
                 </div>
                 <div class="mt-2">
-                    <p>Average Rating: {{ collect($reviews)->avg('rating') }} / 5</p>
+                    <p>Average Rating: {{ $average_rating }} / 5</p>
+                    <p>Total Reviews: {{ $review_count }}</p>
                 </div>
                 <div class="mt-4">
                     <p class="text-base text-gray-500">Product description and other details can go here.</p>
